@@ -20,10 +20,9 @@ import java.io.Serializable;
 public class ShippingAddress implements Serializable {
     private static final long serialVersionUID = 2828114560584386892L;
     @Id
-    @GenericGenerator(name = "system_uuid", strategy = "uuid")
-    @GeneratedValue(generator = "system_uuid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(View.OrderView.class)
-    private String id;
+    private long id;
 
     @NotEmpty
     @Column(name="customer_name")

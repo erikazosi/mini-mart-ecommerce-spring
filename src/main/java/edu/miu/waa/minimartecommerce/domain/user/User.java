@@ -12,7 +12,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -23,7 +23,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(View.UserListView.class)
-    private String id;
+    private long id;
 
     @NotNull
     @NotEmpty
@@ -45,7 +45,7 @@ public class User {
     @JsonView({View.OrderView.class, View.WishListView.class, View.CommentView.class, View.UserListView.class,
             View.UserDetailView.class, View.OrderAdminListView.class})
     @Column(name = "email_id")
-    private String emailId;
+    private String username;
 
     @NotNull
     @NotEmpty
@@ -67,7 +67,7 @@ public class User {
             joinColumns = @JoinColumn(name="user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "id"))
     @JsonView({View.UserListView.class, View.UserDetailView.class})
-    private List<Role> roles;
+    private Set<Role> roles;
 
     @JsonView({View.OrderView.class, View.UserDetailView.class})
     @OneToOne(targetEntity = BillingAddress.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)

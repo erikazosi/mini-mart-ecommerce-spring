@@ -39,6 +39,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth").permitAll()
                 .antMatchers(HttpMethod.POST,"/user/seller").permitAll()
                 .antMatchers(HttpMethod.POST,"/user/buyer").permitAll()
+                .antMatchers("/product/**").permitAll()
 
                 .antMatchers(HttpMethod.GET,"/user/seller/unapproved/get-all").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.GET, "/user/seller/{id}/approve").hasAuthority("ADMIN")

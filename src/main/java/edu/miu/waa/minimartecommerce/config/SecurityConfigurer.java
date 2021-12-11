@@ -3,6 +3,7 @@ package edu.miu.waa.minimartecommerce.config;
 import edu.miu.waa.minimartecommerce.jwt_factory.UserDetailService;
 import edu.miu.waa.minimartecommerce.jwt_factory.filter.JwtFilter;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,7 +36,12 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests() //
-                .antMatchers("/user/**").permitAll()
+                .antMatchers("/auth").permitAll()
+                .antMatchers(HttpMethod.POST,"/user/seller").permitAll()
+                .antMatchers(HttpMethod.POST,"/user/buyer").permitAll()
+
+                .antMatchers(HttpMethod.GET,"/user/seller/unapproved/get-all").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/user/seller/{id}/approve").hasAuthority("ADMIN")
 //                .antMatchers("/", "/h2-console/**").permitAll()
 //                .antMatchers("/users/register").permitAll()
 //                .antMatchers("/**/login").permitAll()

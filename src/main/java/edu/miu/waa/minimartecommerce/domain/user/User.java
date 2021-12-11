@@ -55,9 +55,7 @@ public class User {
     @JsonView({View.UserListView.class, View.UserDetailView.class})
     private Date createdDate = new Date();
 
-    @JsonView({View.UserListView.class, View.UserDetailView.class})
     private boolean active;
-    @JsonView({View.UserListView.class, View.UserDetailView.class})
     @Column(name = "admin_approved")
     private boolean adminApproved;
 

@@ -23,6 +23,7 @@ public class UserDetail implements UserDetails {
         roles = user.getRoles();
         userId = user.getId();
         isActive = user.isActive();
+
     }
 
     @Override
@@ -59,7 +60,7 @@ public class UserDetail implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 
     public long getUserId(){

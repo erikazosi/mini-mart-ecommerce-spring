@@ -9,6 +9,7 @@ import edu.miu.waa.minimartecommerce.repository.user.IUserRepository;
 import edu.miu.waa.minimartecommerce.service.user.IUserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,16 +22,23 @@ public class UserService implements IUserService {
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(IUserRepository userRepository, IRoleRepository roleRepository, ModelMapper modelMapper){
+    public UserService(IUserRepository userRepository, IRoleRepository roleRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public Optional<User> findById(long id) {
+        return userRepository.findById(id);
     }
 
     @Override
@@ -51,7 +59,9 @@ public class UserService implements IUserService {
                 role = roleRepository.findByRole("BUYER");
                 user.setAdminApproved(true);
             }
+            user.setActive(true);
             user.setRoles(Stream.of(role).collect(Collectors.toSet()));
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
             userRepository.save(user);
 
             return new ResponseMessage("Saved Successfully.", HttpStatus.CREATED);
@@ -59,5 +69,23 @@ public class UserService implements IUserService {
         return new ResponseMessage(
                 String.format("Duplicate user!! User with %s already exists.", userDto.getUsername()),
                 HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public List<User> getAllUnapprovedSellers() {
+        return userRepository.findAllByAdminApproved(false);
+    }
+
+    @Override
+    public ResponseMessage approveSellers(long id) {
+        Optional<User> userOpt = findById(id);
+        if(userOpt.isPresent()){
+            User user = userOpt.get();
+            user.setAdminApproved(true);
+            userRepository.save(user);
+            return new ResponseMessage(String.format("%s %s has been approved to be seller", user.getFirstname(), user.getLastname()),
+                    HttpStatus.OK);
+        }
+        return new ResponseMessage("User not found!!", HttpStatus.BAD_REQUEST);
     }
 }

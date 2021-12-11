@@ -21,13 +21,13 @@ public class UserDto {
     @NotNull
     @NotEmpty
     @Email
-    private String email;
+    private String username;
     @NotNull
     @NotEmpty
     private String password;
 
     @Valid
-    private BillingAddressDto billingAddress = null;
+    private AddressDto billingAddress = null;
     @Valid
-    private ShippingAddressDto shippingAddress = null;
+    private AddressDto shippingAddress = null;
 }

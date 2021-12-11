@@ -5,7 +5,6 @@ import edu.miu.waa.minimartecommerce.view.View;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -17,9 +16,8 @@ import javax.validation.constraints.NotEmpty;
 @Data
 public class BillingAddress {
     @Id
-    @GenericGenerator(name = "system_uuid", strategy = "uuid")
-    @GeneratedValue(generator = "system_uuid")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     @JsonView({View.OrderView.class, View.UserDetailView.class})
     @NotEmpty

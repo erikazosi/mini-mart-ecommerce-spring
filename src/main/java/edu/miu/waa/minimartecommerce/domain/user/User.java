@@ -44,7 +44,6 @@ public class User {
     @Email
     @JsonView({View.OrderView.class, View.WishListView.class, View.CommentView.class, View.UserListView.class,
             View.UserDetailView.class, View.OrderAdminListView.class})
-    @Column(name = "email_id")
     private String username;
 
     @NotNull
@@ -54,7 +53,7 @@ public class User {
     @Column(name = "created_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy")
     @JsonView({View.UserListView.class, View.UserDetailView.class})
-    private Date createdDate;
+    private Date createdDate = new Date();
 
     @JsonView({View.UserListView.class, View.UserDetailView.class})
     private boolean active;
@@ -69,13 +68,22 @@ public class User {
     @JsonView({View.UserListView.class, View.UserDetailView.class})
     private Set<Role> roles;
 
-    @JsonView({View.OrderView.class, View.UserDetailView.class})
-    @OneToOne(targetEntity = BillingAddress.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = BillingAddress.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "billing_address_id")
     private BillingAddress billingAddress;
 
     // shipping address will be feasible for only order model
-    @OneToOne(targetEntity = ShippingAddress.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = ShippingAddress.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "shipping_address_id")
     private ShippingAddress shippingAddress;
+
+    public User(String firstname, String middlename, String lastname, String username,
+                String password, Set<Role> roles){
+        this.firstname = firstname;
+        this.middlename = middlename;
+        this.lastname = lastname;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
 }

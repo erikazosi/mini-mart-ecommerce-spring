@@ -5,18 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class BillingAddressDto {
+public class AddressDto {
     @NotEmpty
     private String address;
     @NotEmpty
     private String city;
     @NotEmpty
-    private String district;
+    private String state;
     @NotEmpty
     private String contactNo;
 }

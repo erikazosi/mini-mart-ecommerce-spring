@@ -14,5 +14,5 @@ public interface IUserService {
 
     Optional<User> findByUsername(String username);
 
-    ResponseMessage saveUsers(UserDto userDto);
+    ResponseMessage saveUsers(UserDto userDto, boolean seller);
 }

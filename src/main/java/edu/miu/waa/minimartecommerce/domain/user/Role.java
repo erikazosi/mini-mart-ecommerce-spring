@@ -17,7 +17,9 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView({View.UserListView.class, View.UserDetailView.class})
-    private Long id;
+    private long id;
     @JsonView({View.UserListView.class, View.UserDetailView.class})
     private String role;
+
+    public Role(String role){this.role = role;}
 }
